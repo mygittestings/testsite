@@ -1,0 +1,27 @@
+language: node_js  #设置语言
+
+node_js: stable  #设置相应的版本
+
+branches:
+    only:
+      - master
+
+install:
+  - npm install  #安装hexo及插件
+
+script:
+  - hexo cl  #清除
+  - hexo g  #生成
+
+after_script:
+  - cd ./public
+  - git init
+  - git config user.name "mygittestings"  #修改name
+  - git config user.email "fredhdx3@gmail.com"  #修改email
+  - git add .
+  - git commit -m "site update"
+  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" gh-pages  #GH_TOKEN是在Travis中配置token的名称
+
+env:
+ global:
+   - GH_REF: github.com/mygittestings/testsite.git  #设置GH_REF，注意更改yourname
