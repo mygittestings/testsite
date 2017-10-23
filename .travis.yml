@@ -23,7 +23,8 @@ before_script:
 
 script:
   - hexo cl  #清除
-  - hexo g  --config source/_data/next.yml #生成
+    #- hexo g  --config source/_data/next.yml #生成
+  - hexo g   #生成
 
 after_script:
     - mkdir .deploy                   # Create a folder to use for teh pages branch
