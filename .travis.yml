@@ -1,5 +1,10 @@
 language: node_js  #设置语言
 
+cache: 
+  - pandoc
+  - hexo-cli
+  - hexo-renderer-pandoc
+
 node_js: stable  #设置相应的版本
 
 branches:
@@ -7,6 +12,8 @@ branches:
       - master
 
 install:
+  - wget ${pandoc}
+  - sudo dpkg -i pandoc*.deb
   - npm install  #安装hexo及插件
 
 before_script:
@@ -32,3 +39,4 @@ env:
  global:
    - GH_REF: github.com/mygittestings/testsite.git  #设置GH_REF，注意更改yourname
    - DEPLOY_REPO: https://${GH_TOKEN}@${GH_REF}
+   - pandoc: https://github.com/jgm/pandoc/releases/download/1.19.2.1/pandoc-1.19.2.1-1-amd64.deb
