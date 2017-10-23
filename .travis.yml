@@ -4,7 +4,7 @@ cache:
   - pandoc
   - hexo-renderer-pandoc
 
-node_js: 4.7.2  #设置相应的版本
+node_js: stable  #设置相应的版本
 
 branches:
     only:
