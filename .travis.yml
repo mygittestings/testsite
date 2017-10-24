@@ -1,45 +1,39 @@
-matrix:
-    include:
-        - language: python
-          python: 3.5
-          install: true
+language: node_js  #设置语言
+  cache: 
+    - pandoc
+    - hexo-renderer-pandoc
+  node_js: stable  #设置相应的版本
+  branches:
+      only:
+          - master
+  install:
+      - wget ${pandoc}
+      - sudo dpkg -i pandoc*.deb
+      - npm install hexo-cli -g
+      - npm install hexo-renderer-pandoc --save
+      - npm install  #安装hexo及插件
 
-        - language: node_js  #设置语言
-          cache: 
-            - pandoc
-            - hexo-renderer-pandoc
-          node_js: stable  #设置相应的版本
-          branches:
-              only:
-                  - master
-          install:
-              - wget ${pandoc}
-              - sudo dpkg -i pandoc*.deb
-              - npm install hexo-cli -g
-              - npm install hexo-renderer-pandoc --save
-              - npm install  #安装hexo及插件
+  before_script:
+      - git config --global user.name 'mygittestings'
+      - git config --global user.email 'fredhdx3@gmail.com'
 
-          before_script:
-              - git config --global user.name 'mygittestings'
-              - git config --global user.email 'fredhdx3@gmail.com'
+  script:
+      - hexo cl  #清除
+      - hexo g  --config source/_data/next.yml #生成
 
-          script:
-              - hexo cl  #清除
-              - hexo g  --config source/_data/next.yml #生成
+  after_script:
+      - mkdir .deploy                   # Create a folder to use for teh pages branch
+      - cd .deploy
+      - git clone --depth 1 --branch gh-pages --single-branch $DEPLOY_REPO . || (git init && git remote add -t gh-pages origin $DEPLOY_REPO)
+      - rm -rf ./*                      # Clear old verion
+      - cp -r ../public/* .             # Copy over files for new version
+      - git add -A .
+      - git commit -m 'Site updated'    # Make a new commit for new version
+      - git branch -m gh-pages
+      - git push -q -u origin gh-pages  # Push silently so we don't leak information
 
-          after_script:
-              - mkdir .deploy                   # Create a folder to use for teh pages branch
-              - cd .deploy
-              - git clone --depth 1 --branch gh-pages --single-branch $DEPLOY_REPO . || (git init && git remote add -t gh-pages origin $DEPLOY_REPO)
-              - rm -rf ./*                      # Clear old verion
-              - cp -r ../public/* .             # Copy over files for new version
-              - git add -A .
-              - git commit -m 'Site updated'    # Make a new commit for new version
-              - git branch -m gh-pages
-              - git push -q -u origin gh-pages  # Push silently so we don't leak information
-
-          env:
-              global:
-                  - GH_REF: github.com/mygittestings/testsite.git  #设置GH_REF，注意更改yourname
-                  - DEPLOY_REPO: https://${GH_TOKEN}@${GH_REF}
-                  - pandoc: https://github.com/jgm/pandoc/releases/download/1.19.2.1/pandoc-1.19.2.1-1-amd64.deb
+  env:
+      global:
+          - GH_REF: github.com/mygittestings/testsite.git  #设置GH_REF，注意更改yourname
+          - DEPLOY_REPO: https://${GH_TOKEN}@${GH_REF}
+          - pandoc: https://github.com/jgm/pandoc/releases/download/1.19.2.1/pandoc-1.19.2.1-1-amd64.deb
