@@ -22,7 +22,7 @@ before_script:
     - git config --global user.name 'mygittestings'
     - git config --global user.email 'fredhdx3@gmail.com'
     - cd python-codes
-    - ./bash.sh
+    - ./build.sh
     - cd ..
 
 script:
