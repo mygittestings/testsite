@@ -6,6 +6,8 @@ cache:
 
 node_js: stable  #设置相应的版本
 
+python: 3.5
+
 branches:
     only:
       - master
