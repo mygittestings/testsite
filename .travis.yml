@@ -21,6 +21,9 @@ install:
 before_script:
     - git config --global user.name 'mygittestings'
     - git config --global user.email 'fredhdx3@gmail.com'
+    - cd python-codes
+    - ./bash.sh
+    - cd ..
 
 script:
   - hexo cl  #清除
